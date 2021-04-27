@@ -224,8 +224,8 @@ extension PageViewController: UIScrollViewDelegate {
         let distance = pageSize
         var progress: CGFloat
         
-        if contentOffset.y != -0 {
-            contentOffset.y = 0
+        if scrollView.contentOffset.y != -0 {
+            scrollView.contentOffset.y = 0
         }
 
         if isRightToLeft {
