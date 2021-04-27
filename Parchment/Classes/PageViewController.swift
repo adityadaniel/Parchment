@@ -223,6 +223,10 @@ extension PageViewController: UIScrollViewDelegate {
     public func scrollViewDidScroll(_: UIScrollView) {
         let distance = pageSize
         var progress: CGFloat
+        
+        if contentOffset.y != -0 {
+            contentOffset.y = 0
+        }
 
         if isRightToLeft {
             switch manager.state {
