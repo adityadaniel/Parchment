@@ -373,22 +373,36 @@ extension PageViewController: PageViewManagerDelegate {
     func addViewController(_ viewController: UIViewController) {
         viewController.willMove(toParent: self)
         addChild(viewController)
-        scrollView.addSubview(viewController.view)
+        
+        // this is original implementation, we don't add the view here because it may be rendered immediatedly and unexpected behaviour of Intelligent Preloading
+        // scrollView.addSubview(viewController.view)
+        
         viewController.didMove(toParent: self)
     }
 
     func removeViewController(_ viewController: UIViewController) {
         viewController.willMove(toParent: nil)
         viewController.removeFromParent()
-        viewController.view.removeFromSuperview()
+        
+        // this is original implementation, we don't remove the view in here because it may be rendered immediatedly and unexpected behaviour of Intelligent Preloading
+        // viewController.view.removeFromSuperview()
+        
         viewController.didMove(toParent: nil)
     }
 
     func beginAppearanceTransition(isAppearing: Bool, viewController: UIViewController, animated: Bool) {
+        // Add the view when the viewController trigger viewWillAppear
+        if isAppearing {
+            scrollView.addSubview(viewController.view)
+        }
         viewController.beginAppearanceTransition(isAppearing, animated: animated)
     }
 
     func endAppearanceTransition(viewController: UIViewController) {
+        // Remove the view when the viewController trigger viewDidDisappear
+        if viewController != selectedViewController {
+            viewController.view.removeFromSuperview()
+        }
         viewController.endAppearanceTransition()
     }
 
